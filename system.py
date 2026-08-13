@@ -11,6 +11,10 @@ class MemberNotFoundError(GymError):
 class DuplicateMemberError(GymError):
     def __init__(self, member_id):
         super().__init__(f"Member '{member_id}' does already exist")
+
+class WrongDataError(GymError):
+    def __init__(self):
+        super().__init__("Wrong input data")
     
 
 

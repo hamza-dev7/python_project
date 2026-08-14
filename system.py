@@ -25,6 +25,11 @@ class Gym:
     def add_member(self, member:object):
         if member.id in self.members:
             raise DuplicateMemberError(member.id)
+        elif (not isinstance(member.first_name, str) or not member.first_name.strip()
+                or not member.first_name.replace(" ", "").isalpha()
+                or not isinstance(member.last_name, str) or not member.last_name.strip()
+                or not member.last_name.replace(" ", "").isalpha()):
+            raise WrongDataError() 
         else:
             self.members[member.id] = member
             print(f"{member.id} added successfuly")
@@ -41,7 +46,7 @@ class Gym:
     
     def name_search(self, first_name, last_name):
         for member in self.members.values():
-            if member.first_name == first_name and member.last_name == last_name:
+            if member.first_name.strip() == first_name.strip() and member.last_name.strip() == last_name.strip():
                 return member
 
 

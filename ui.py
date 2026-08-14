@@ -1,4 +1,5 @@
 import os
+import time
 
 import data
 import system
@@ -34,8 +35,10 @@ class UI:
             self.input_decoration()
             last_name = input("Enter last name: ")
             self.decoration1()
+
             if self.gym.name_search(first_name, last_name):
                 member = self.gym.name_search(first_name, last_name)
+                """returning to the system class the duplicate member object"""
             else:
                 member = self.member(first_name, last_name)
             self.gym.add_member(member)
@@ -165,6 +168,7 @@ while True:
     choice = input("Enter your choice: ")
     if choice == "1":
         ui.ui_add_member()
+        time.sleep(1)
         continue
     elif choice == "2":
         ui.show_all_members()

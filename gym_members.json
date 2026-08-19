@@ -1,14 +1,14 @@
 {
-  "542": {
-    "first_name": "Hamza",
-    "last_name": "Anas",
-    "id": "542",
-    "membership": null
-  },
-  "036": {
-    "first_name": "Abdo",
-    "last_name": "Anas",
-    "id": "036",
-    "membership": null
-  }
+    "542": {
+        "first_name": "Hamza",
+        "last_name": "Anas",
+        "id": "542",
+        "membership": null
+    },
+    "036": {
+        "first_name": "Abdo",
+        "last_name": "Anas",
+        "id": "036",
+        "membership": "3"
+    }
 }

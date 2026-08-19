@@ -91,7 +91,7 @@ class UI:
             self.decoration1()
             print(f"Name: {member.first_name} {member.last_name}")
             print(f"ID: {member.id}")
-            print(f"Membership: {member.membership}")
+            print(f"Membership: {system.SUBSCRIPTION_TYPES[member.membership] if not member.membership is None else 'None'}")
             self.decoration1()
             self.decoration2()
             print("1-Add membership \n2-Change membership \n3-Remove member \n4-Back")
@@ -152,7 +152,7 @@ class UI:
 
     
 ui = UI()
-gym_members_file = "python_project/gym_members.json" 
+gym_members_file = "gym_members.json" 
 raw_data = data.load_json(gym_members_file)
 for key, value in raw_data.items():
     ui.gym.members[key] = ui.member.from_dict(value)

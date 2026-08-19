@@ -1,5 +1,11 @@
 import random
 
+SUBSCRIPTION_TYPES = {
+    "1": "1 month",
+    "2": "3 months",
+    "3": "6 months",
+    "4": "12 months"
+}
 
 class GymError(Exception):
     pass

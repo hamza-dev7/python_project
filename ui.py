@@ -1,8 +1,8 @@
 import os
 import time
 
-import data
 import system
+from data import GYM_MEM_FILE, load_json, save_json
 
 
 class UI:
@@ -63,11 +63,14 @@ class UI:
     def ui_add_membership(self, member:object):
         try:
             self.show_memberships()
+
             self.decoration1()
             self.input_decoration()
             membership_type = input("Enter membership type: ")
             self.decoration1()
+
             self.membership.add_membership(member, membership_type)
+            print("membership added successfuly")
         except system.GymError as e:
             print(e)
             return
@@ -75,12 +78,15 @@ class UI:
     def ui_change_membership(self, member:object):
         try:
             self.show_memberships()
+
             self.decoration1()
             self.input_decoration()
             membership_type = input("Enter membership type: ")
             self.decoration1()
+
             self.membership.remove_membership(member, member.membership)
             self.membership.add_membership(member, membership_type)
+            print("membership changed successfuly")
         except system.GymError as e:
             print(e)
             return
@@ -88,24 +94,30 @@ class UI:
     def show_mem_info(self, member:object):
         while True:
             self.clear()
+
             self.decoration1()
             print(f"Name: {member.first_name} {member.last_name}")
             print(f"ID: {member.id}")
             print(f"Membership: {system.SUBSCRIPTION_TYPES[member.membership] if not member.membership is None else 'None'}")
             self.decoration1()
+
             self.decoration2()
             print("1-Add membership \n2-Change membership \n3-Remove member \n4-Back")
             self.decoration2()
+
             self.decoration1()
             choice = input("Enter your choice: ")
             if choice == "1":
                 self.ui_add_membership(member)
+                time.sleep(1)
                 continue
             elif choice == "2":
                 self.ui_change_membership(member)
+                time.sleep(1)
                 continue
             elif choice == "3":
                 self.ui_remove_member(member)
+                time.sleep(1)
                 break
             elif choice == "4":
                 break
@@ -152,11 +164,12 @@ class UI:
 
     
 ui = UI()
-gym_members_file = "gym_members.json" 
-raw_data = data.load_json(gym_members_file)
-for key, value in raw_data.items():
-    ui.gym.members[key] = ui.member.from_dict(value)
+def load_all_data():
+    raw_data = load_json(GYM_MEM_FILE)
+    for key, value in raw_data.items():
+        ui.gym.members[key] = ui.member.from_dict(value)
 while True:
+    load_all_data()
     ui.clear()
 
     UI.decoration1()
@@ -178,7 +191,7 @@ while True:
         continue
     elif choice == "4":
         optimized_data = {member.id: member.to_dict() for member in ui.gym.members.values()}
-        data.save_json(gym_members_file, optimized_data)
+        save_json(GYM_MEM_FILE, optimized_data)
         break
     else:
         print("Invalid choice")

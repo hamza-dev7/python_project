@@ -68,11 +68,9 @@ class Gym:
         def add_membership(self,member:object, membership_type):
             self.membership_dict[membership_type].append(member.id)
             member.membership = membership_type
-            print("added succesfuly")
 
         def remove_membership(self,member:object, membership_type):
             self.membership_dict[membership_type].remove(member.id)
-            print("removed successfuly")
 
 
 

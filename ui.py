@@ -27,6 +27,8 @@ class UI:
     def clear():
         os.system("clear")
 
+
+
     def ui_add_member(self):
         try:
             self.decoration1()
@@ -87,6 +89,17 @@ class UI:
             self.membership.remove_membership(member, member.membership)
             self.membership.add_membership(member, membership_type)
             print("membership changed successfuly")
+        except system.GymError as e:
+            print(e)
+            return
+
+    def ui_membership_expiry(self):
+        try:
+            for members in self.membership.membership_dict.values():
+                for member_id in members:
+                    member = self.gym.id_search(member_id)
+                    self.membership.check_membership_expiry(member)
+
         except system.GymError as e:
             print(e)
             return
@@ -171,6 +184,7 @@ def load_all_data():
 while True:
     load_all_data()
     ui.clear()
+    ui.ui_membership_expiry()
 
     UI.decoration1()
     UI.decoration2()

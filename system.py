@@ -21,58 +21,6 @@ class DuplicateMemberError(GymError):
 class WrongDataError(GymError):
     def __init__(self):
         super().__init__("Wrong input data")
-    
-
-
-class Gym:
-    def __init__(self):
-        self.members:dict = {}
-
-    def add_member(self, member:object):
-        if member.id in self.members:
-            raise DuplicateMemberError(member.id)
-        elif (not isinstance(member.first_name, str) or not member.first_name.strip()
-                or not member.first_name.replace(" ", "").isalpha()
-                or not isinstance(member.last_name, str) or not member.last_name.strip()
-                or not member.last_name.replace(" ", "").isalpha()):
-            raise WrongDataError() 
-        else:
-            self.members[member.id] = member
-            print(f"{member.id} added successfuly")
-    
-    def remove_member(self, member:object):
-            self.members.pop(member.id)
-            print(f"{member.id} removed successfuly")
-
-    def id_search(self, member_id):
-        if member_id not in self.members:
-            raise MemberNotFoundError(member_id)
-        else:
-            return self.members[member_id]
-    
-    def name_search(self, first_name, last_name):
-        for member in self.members.values():
-            if member.first_name.strip() == first_name.strip() and member.last_name.strip() == last_name.strip():
-                return member
-
-
-    class Membership:
-        def __init__(self):
-            self.membership_dict:dict = {
-                                    "1": [], # 1 month
-                                    "2": [], # 3 months
-                                    "3": [], # 6 months
-                                    "4": []  # 12 months
-                                        }
-        
-        def add_membership(self,member:object, membership_type):
-            self.membership_dict[membership_type].append(member.id)
-            member.membership = membership_type
-
-        def remove_membership(self,member:object, membership_type):
-            self.membership_dict[membership_type].remove(member.id)
-
-
 
 
 class Member:
@@ -89,3 +37,52 @@ class Member:
     @classmethod
     def from_dict(cls, data):
         return cls(**data)
+
+
+class Gym:
+    def __init__(self):
+        self.members:dict = {}
+
+    def add_member(self, member:Member):
+        if member.id in self.members:
+            raise DuplicateMemberError(member.id)
+        elif (not isinstance(member.first_name, str) or not member.first_name.strip()
+                or not member.first_name.replace(" ", "").isalpha()
+                or not isinstance(member.last_name, str) or not member.last_name.strip()
+                or not member.last_name.replace(" ", "").isalpha()):
+            raise WrongDataError()
+        else:
+            self.members[member.id] = member
+            print(f"{member.id} added successfuly")
+
+    def remove_member(self, member:Member):
+            self.members.pop(member.id)
+            print(f"{member.id} removed successfuly")
+
+    def id_search(self, member_id):
+        if member_id not in self.members:
+            raise MemberNotFoundError(member_id)
+        else:
+            return self.members[member_id]
+
+    def name_search(self, first_name, last_name):
+        for member in self.members.values():
+            if member.first_name.strip() == first_name.strip() and member.last_name.strip() == last_name.strip():
+                return member
+
+
+    class Membership:
+        def __init__(self):
+            self.membership_dict:dict = {
+                                    "1": [], # 1 month
+                                    "2": [], # 3 months
+                                    "3": [], # 6 months
+                                    "4": []  # 12 months
+                                        }
+
+        def add_membership(self,member:Member, membership_type):
+            self.membership_dict[membership_type].append(member.id)
+            member.membership = membership_type
+
+        def remove_membership(self,member:Member, membership_type):
+            self.membership_dict[membership_type].remove(member.id)

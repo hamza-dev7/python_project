@@ -10,7 +10,7 @@ class UI:
         self.gym = system.Gym()
         self.membership = system.Gym.Membership()
         self.member = system.Member
-        
+
 
     @staticmethod
     def decoration1():
@@ -18,11 +18,11 @@ class UI:
     @staticmethod
     def decoration2():
         print("-" * 32)
-    
+
     @staticmethod
     def input_decoration():
         print("-" * 4, end="")
-    
+
     @staticmethod
     def clear():
         os.system("clear")
@@ -36,17 +36,17 @@ class UI:
             last_name = input("Enter last name: ")
             self.decoration1()
 
-            if self.gym.name_search(first_name, last_name):
-                member = self.gym.name_search(first_name, last_name)
-                """returning to the system class the duplicate member object"""
+            existing_member = self.gym.name_search(first_name, last_name)
+            if existing_member:
+                member = existing_member
             else:
                 member = self.member(first_name, last_name)
             self.gym.add_member(member)
         except system.GymError as e:
             print(e)
             return
-        
-    def ui_remove_member(self, member:object):
+
+    def ui_remove_member(self, member:system.Member):
         try:
             self.gym.remove_member(member)
         except system.GymError as e:
@@ -60,7 +60,7 @@ class UI:
         self.decoration2()
         self.decoration1()
 
-    def ui_add_membership(self, member:object):
+    def ui_add_membership(self, member:system.Member):
         try:
             self.show_memberships()
 
@@ -74,8 +74,8 @@ class UI:
         except system.GymError as e:
             print(e)
             return
-    
-    def ui_change_membership(self, member:object):
+
+    def ui_change_membership(self, member:system.Member):
         try:
             self.show_memberships()
 
@@ -91,7 +91,7 @@ class UI:
             print(e)
             return
 
-    def show_mem_info(self, member:object):
+    def show_mem_info(self, member:system.Member):
         while True:
             self.clear()
 
@@ -158,11 +158,11 @@ class UI:
         except system.GymError as e:
             print(e)
             return
-        
 
 
 
-    
+
+
 ui = UI()
 def load_all_data():
     raw_data = load_json(GYM_MEM_FILE)

@@ -45,7 +45,7 @@ class Member:
 
 class Gym:
     def __init__(self):
-        self.members:dict = {}
+        self.members:dict[str, Member] = {}
 
     def add_member(self, member:Member):
         if member.id in self.members:
@@ -77,7 +77,7 @@ class Gym:
 
     class Membership:
         def __init__(self):
-            self.membership_dict:dict = {
+            self.membership_dict:dict[str, list[str]] = {
                                     "1": [], # 1 month
                                     "2": [], # 3 months
                                     "3": [], # 6 months

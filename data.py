@@ -1,6 +1,7 @@
 import json
 
 GYM_MEM_FILE = "gym_members.json"
+MEMBERSHIP_DICT_FILE = "membership_dict.json"
 def load_json(file_path):
     try:
         with open(file_path, "r") as f:

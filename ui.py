@@ -1,8 +1,9 @@
 import os
+from re import M
 import time
 
 import system
-from data import GYM_MEM_FILE, load_json, save_json
+from data import GYM_MEM_FILE, MEMBERSHIP_DICT_FILE, load_json, save_json
 
 
 class UI:
@@ -177,12 +178,19 @@ class UI:
 
 
 ui = UI()
-def load_all_data():
+def load_membership_dict():
+    raw_data = load_json(MEMBERSHIP_DICT_FILE)
+    for key, value in raw_data.items():
+        ui.membership.membership_dict[key] = value
+
+def load_gym_members():
     raw_data = load_json(GYM_MEM_FILE)
     for key, value in raw_data.items():
         ui.gym.members[key] = ui.member.from_dict(value)
 while True:
-    load_all_data()
+    load_gym_members()
+    load_membership_dict()
+
     ui.clear()
     ui.ui_membership_expiry()
 
@@ -206,6 +214,7 @@ while True:
     elif choice == "4":
         optimized_data = {member.id: member.to_dict() for member in ui.gym.members.values()}
         save_json(GYM_MEM_FILE, optimized_data)
+        save_json(MEMBERSHIP_DICT_FILE, ui.membership.membership_dict)
         break
     else:
         print("Invalid choice")

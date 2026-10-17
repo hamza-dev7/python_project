@@ -1,16 +1,9 @@
 {
-    "044": {
-        "first_name": "hamza",
-        "last_name": "anas",
-        "id": "044",
-        "membership": null,
-        "membership_end_time": null
-    },
     "562": {
         "first_name": "Simo",
         "last_name": "El Ghazi",
         "id": "562",
-        "membership": "1",
-        "membership_end_time": "2026-11-16"
+        "membership": null,
+        "membership_end_time": null
     }
 }

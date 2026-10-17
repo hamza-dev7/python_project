@@ -1,7 +1,7 @@
 import datetime
 import random
 
-TIMEZONE = datetime.timezone.utc
+TIMEZONE = datetime.UTC
 SUBSCRIPTION_TYPES = {
     "1": "1 month",
     "2": "3 months",
@@ -19,6 +19,14 @@ class MemberNotFoundError(GymError):
 class DuplicateMemberError(GymError):
     def __init__(self, member_id):
         super().__init__(f"Member '{member_id}' does already exist")
+
+class MembershipAlreadyExistsError(GymError):
+    def __init__(self, member_id):
+        super().__init__(f"Member '{member_id}' already has a membership")
+
+class NoMembershipExistsError(GymError):
+    def __init__(self, member_id):
+        super().__init__(f"Member '{member_id}' does not have a membership")
 
 class WrongDataError(GymError):
     def __init__(self):
@@ -40,9 +48,6 @@ class Member:
     def from_dict(cls, data):
         return cls(**data)
 
-
-
-
 class Gym:
     def __init__(self):
         self.members:dict[str, Member] = {}
@@ -59,8 +64,10 @@ class Gym:
             self.members[member.id] = member
             print(f"{member.id} added successfuly")
 
-    def remove_member(self, member:Member):
+    def remove_member(self, member:Member, membership: 'Gym.Membership'):
             self.members.pop(member.id)
+            if member.membership is not None:
+                membership.remove_membership(member, member.membership)
             print(f"{member.id} removed successfuly")
 
     def id_search(self, member_id):
@@ -74,7 +81,6 @@ class Gym:
             if member.first_name.strip() == first_name.strip() and member.last_name.strip() == last_name.strip():
                 return member
 
-
     class Membership:
         def __init__(self):
             self.membership_dict:dict[str, list[str]] = {
@@ -85,6 +91,8 @@ class Gym:
                                         }
 
         def add_membership(self,member:Member, membership_type):
+            if member.membership is not None:
+                raise MembershipAlreadyExistsError(member.id)
             self.membership_dict[membership_type].append(member.id)
             member.membership = membership_type
             if membership_type == "1":
@@ -97,6 +105,8 @@ class Gym:
                 member.membership_end_time = (datetime.datetime.now(tz=TIMEZONE) + datetime.timedelta(days=365)).strftime('%Y-%m-%d')
 
         def remove_membership(self,member:Member, membership_type):
+            if member.membership is None:
+                raise NoMembershipExistsError(member.id)
             self.membership_dict[membership_type].remove(member.id)
             member.membership = None
             member.membership_end_time = None
